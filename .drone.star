@@ -558,7 +558,7 @@ def uiTestPipeline(ctx, suiteName, storage = 'owncloud', accounts_hash_difficult
       ocisServer(storage, accounts_hash_difficulty, [stepVolumeOC10Tests]) + [
       {
         'name': 'webUITests',
-        'image': 'webhippie/nodejs:latest',
+        'image': 'owncloudci/nodejs:12',
         'pull': 'always',
         'environment': {
           'SERVER_HOST': 'https://ocis-server:9200',
@@ -580,7 +580,6 @@ def uiTestPipeline(ctx, suiteName, storage = 'owncloud', accounts_hash_difficult
           'cd /srv/app/web',
           'git checkout $WEB_COMMITID',
           'cp -r tests/acceptance/filesForUpload/* /uploads',
-          'yarn install-all',
           './tests/acceptance/run.sh'
         ],
         'volumes':
@@ -624,7 +623,7 @@ def accountsUITests(ctx, storage = 'owncloud', accounts_hash_difficulty = 4):
       ocisServer(storage, accounts_hash_difficulty, [stepVolumeOC10Tests]) + [
       {
         'name': 'WebUIAcceptanceTests',
-        'image': 'webhippie/nodejs:latest',
+        'image': 'owncloudci/nodejs:12',
         'pull': 'always',
         'environment': {
           'SERVER_HOST': 'https://ocis-server:9200',
@@ -646,7 +645,6 @@ def accountsUITests(ctx, storage = 'owncloud', accounts_hash_difficulty = 4):
           'cd /srv/app/web',
           'git checkout $WEB_COMMITID',
           'cp -r tests/acceptance/filesForUpload/* /uploads',
-          'yarn install-all',
           'cd /drone/src/accounts',
           'yarn install --all',
           'make test-acceptance-webui'
